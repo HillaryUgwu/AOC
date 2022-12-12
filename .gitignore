@@ -20,3 +20,5 @@
 *.xml
 *.crt
 *.yaml
+AOC
+.vscode
