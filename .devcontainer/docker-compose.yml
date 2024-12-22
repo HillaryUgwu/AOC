@@ -1,0 +1,12 @@
+version: '3.7'
+services:
+    aoc:
+      build:
+        context: ..
+        dockerfile: .devcontainer/Dockerfile
+        args:
+          PYTHON_VERSION: "3.12"
+      extra_hosts:
+        - 'host.docker.internal:host-gateway'
+      volumes:
+        - ..:/aoc:cached

@@ -1,0 +1,46 @@
+diff --git a/aoc/node_modules/serverless-python-requirements/lib/pip.js b/aoc/node_modules/serverless-python-requirements/lib/pip.js
+index 40140d3..bfc75ab 100644
+--- a/aoc/node_modules/serverless-python-requirements/lib/pip.js
++++ b/aoc/node_modules/serverless-python-requirements/lib/pip.js
+@@ -147,7 +147,7 @@ async function installRequirements(targetFolder, pluginInstance, funcOptions) {
+
+   try {
+     const dockerCmd = [];
+-    const pipCmd = [options.pythonBin, '-m', 'pip', 'install'];
++    const pipCmd = ['uv', 'pip', 'install', '--verbose', '--system'];
+
+     if (
+       Array.isArray(options.pipCmdExtraArgs) &&
+@@ -159,7 +159,10 @@ async function installRequirements(targetFolder, pluginInstance, funcOptions) {
+       });
+     }
+
+-    const pipCmds = [pipCmd];
++    const pipCmds = [
++      [options.pythonBin, '-m', 'pip', 'install', 'uv'],
++      pipCmd
++    ];
+     const postCmds = [];
+     // Check if we're using the legacy --cache-dir command...
+     if (options.pipCmdExtraArgs.indexOf('--cache-dir') > -1) {
+@@ -196,9 +199,9 @@ async function installRequirements(targetFolder, pluginInstance, funcOptions) {
+     if (!options.dockerizePip) {
+       // Push our local OS-specific paths for requirements and target directory
+       pipCmd.push(
+-        '-t',
++        '--target',
+         dockerPathForWin(targetFolder),
+-        '-r',
++        '--requirement',
+         dockerPathForWin(targetRequirementsTxt)
+       );
+       // If we want a download cache...
+@@ -226,7 +229,7 @@ async function installRequirements(targetFolder, pluginInstance, funcOptions) {
+     // If we are dockerizing pip
+     if (options.dockerizePip) {
+       // Push docker-specific paths for requirements and target directory
+-      pipCmd.push('-t', '/var/task/', '-r', '/var/task/requirements.txt');
++      pipCmd.push('--target', '/var/task/', '--requirement', '/var/task/requirements.txt');
+
+       // Build docker image if required
+       let dockerImage;
