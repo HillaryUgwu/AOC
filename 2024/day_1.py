@@ -1,4 +1,4 @@
-FILENAME = "raw/2024/day_1/input.txt"
+FILENAME = "raw/2024/day_1.txt"
 
 
 def get_total_distance(loc_id):
